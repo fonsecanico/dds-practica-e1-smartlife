@@ -17,8 +17,8 @@ class Cliente {
 
 class Dispositivo
 {
-- double costoDispositivo
-+ double getCostoDispositivo()
+- double costo
++ double getCosto()
 }
 
 abstract class Plan {
@@ -26,21 +26,21 @@ abstract class Plan {
 + {abstract} double calcularMonto(List<Dispositivo> dispositivos)
 }
 
-class Corporativo {
+class PlanCorporativo {
 - double descuento
 + calcularMonto(List<Dispositivo> dispositivos)
 }
-class Comercio {
+class PlanComercio {
 + calcularMonto(List<Dispositivo> dispositivos)
 }
-class Hogar {
+class PlanHogar {
 + calcularMonto(List<Dispositivo> dispositivos)
 }
 
 Cliente *-- Plan
-Plan <|-- Corporativo
-Plan <|-- Comercio
-Plan <|-- Hogar
+Plan <|-- PlanCorporativo
+Plan <|-- PlanComercio
+Plan <|-- PlanHogar
 Cliente "1"<-- FacturaMensual : contains
 Dispositivo "*" <-- Cliente
 @enduml

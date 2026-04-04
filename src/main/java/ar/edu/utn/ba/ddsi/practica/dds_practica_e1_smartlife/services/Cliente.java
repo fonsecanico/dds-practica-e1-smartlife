@@ -3,7 +3,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 @Component
 @Data
@@ -11,10 +12,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Cliente
 {
-    private List<Dispositivo> dispositivos;
+    private Set<Dispositivo> dispositivos = new HashSet<>();
     private Plan plan;
 
-    public double calcularMonto() {
+    public double calcularMonto()
+    {
         return plan.calcularMonto(dispositivos);
+    }
+    public void agregarDispositivo(Dispositivo dispositivo)
+    {
+        this.dispositivos.add(dispositivo);
+    }
+    public void removerDispositivo(Dispositivo dispositivo)
+    {
+        if(dispositivos.contains(dispositivo)) this.dispositivos.remove(dispositivo);
     }
 }

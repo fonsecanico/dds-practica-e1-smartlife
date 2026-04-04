@@ -2,16 +2,15 @@ package ar.edu.utn.ba.ddsi.practica.dds_practica_e1_smartlife.services;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.util.List;
+import java.util.Set;
 
 @Component
 @NoArgsConstructor
-@AllArgsConstructor
-public class Comercio extends Plan
+public class PlanComercio extends Plan
 {
     @Override
-    public double calcularMonto(List<Dispositivo> dispositivos) {
-        double montoDispositivos = dispositivos.stream().mapToDouble(Dispositivo :: getCostoDispositivo).sum();
+    public double calcularMonto(Set<Dispositivo> dispositivos) {
+        double montoDispositivos = dispositivos.stream().mapToDouble(Dispositivo ::getCosto).sum();
         return montoBase + montoDispositivos;
     }
 }
