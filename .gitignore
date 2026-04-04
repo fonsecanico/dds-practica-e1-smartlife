@@ -1,3 +1,9 @@
+# Carpeta de Configuración de la IDE
+.idea
+
+# Carpeta Target
+target
+
 # Compiled class file
 *.class
 
