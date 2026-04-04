@@ -24,3 +24,6 @@ Y teniendo como restricción que solamente se podrán utilizar, además de la cl
 1. Diseñar una solución en el Paradigma Orientado a Objetos y comunicar la solución mediante un Diagrama de Clases.
 2. Codificar la solución en Java.
 3. Crear los tests unitarios que considere necesario para mostrar el correcto funcionamiento del módulo.
+
+---
+![Diagrama de Clases](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fonsecanico/dds-practica-e1-smartlife/main/src/smartlife-class-diagram.puml)
