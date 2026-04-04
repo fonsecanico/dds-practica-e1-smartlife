@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class FacturaMensual
+{
+- Cliente cliente
++ double calcularMonto()
+}
+
+class Cliente {
+- List<Dispositivo> dispositivos
+- Plan plan
++ double calcularMonto()
+- void registrarDispositivo(Dispositivo dispositivo)
+- void eliminarDispositivo(Dispositivo dispositivo)
+}
+
+class Dispositivo
+{
+- double costoDispositivo
++ double getCostoDispositivo()
+}
+
+abstract class Plan {
+# double montoBase
++ {abstract} double calcularMonto(List<Dispositivo> dispositivos)
+}
+
+class Corporativo {
+- double descuento
++ calcularMonto(List<Dispositivo> dispositivos)
+}
+class Comercio {
++ calcularMonto(List<Dispositivo> dispositivos)
+}
+class Hogar {
++ calcularMonto(List<Dispositivo> dispositivos)
+}
+
+Cliente *-- Plan
+Plan <|-- Corporativo
+Plan <|-- Comercio
+Plan <|-- Hogar
+Cliente "1"<-- FacturaMensual : contains
+Dispositivo "*" <-- Cliente
+@enduml
