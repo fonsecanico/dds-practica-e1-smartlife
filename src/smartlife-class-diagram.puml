@@ -37,10 +37,10 @@ class PlanHogar {
 + calcularMonto(Set<Dispositivo> dispositivos)
 }
 
-Cliente *-- Plan
-Plan <|-- PlanCorporativo
-Plan <|-- PlanComercio
-Plan <|-- PlanHogar
-Cliente "1"<-- FacturaMensual : contains
-Dispositivo "*" <-- Cliente
+Cliente *-- Plan : compone
+Plan <|-- PlanCorporativo : hereda
+Plan <|-- PlanComercio : hereda
+Plan <|-- PlanHogar : hereda
+Cliente <-- FacturaMensual : contiene 1
+Dispositivo "*" <-- Cliente: simple
 @enduml
