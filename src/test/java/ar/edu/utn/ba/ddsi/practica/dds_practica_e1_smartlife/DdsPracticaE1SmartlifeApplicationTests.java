@@ -177,9 +177,7 @@ class DdsPracticaE1SmartlifeApplicationTests {
 	{
 		long dispositivosEsperados = 3;
 
-		cliente.agregarDispositivo(dispositivoCelular);
-		cliente.agregarDispositivo(dispositivoTelevisor);
-		cliente.agregarDispositivo(dispositivoTelefonoFijo);
+		dispositivos.forEach(dispositivo -> cliente.agregarDispositivo(dispositivo));
 
 		assertThat(cliente.getDispositivos().stream().count()).isEqualTo(dispositivosEsperados);
 	}
@@ -188,13 +186,8 @@ class DdsPracticaE1SmartlifeApplicationTests {
 	{
 		long dispositivosEsperados = 0;
 
-		cliente.agregarDispositivo(dispositivoCelular);
-		cliente.agregarDispositivo(dispositivoTelevisor);
-		cliente.agregarDispositivo(dispositivoTelefonoFijo);
-
-		cliente.removerDispositivo(dispositivoCelular);
-		cliente.removerDispositivo(dispositivoTelevisor);
-		cliente.removerDispositivo(dispositivoTelefonoFijo);
+		dispositivos.forEach(dispositivo -> cliente.agregarDispositivo(dispositivo));
+		dispositivos.forEach(dispositivo -> cliente.removerDispositivo(dispositivo));
 
 		assertThat(cliente.getDispositivos().stream().count()).isEqualTo(dispositivosEsperados);
 	}
@@ -223,18 +216,39 @@ class DdsPracticaE1SmartlifeApplicationTests {
 	@Test
 	public void clienteCalcularMontoPlanHogarDevuelveMontoBase()
 	{
+		double montoBase = 100, montoEsperado = 100;
+		planHogar.setMontoBase(montoBase);
+		cliente.setPlan(planHogar);
+		assertThat(cliente.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
 	public void clienteCalcularMontoPlanComercioCeroDispositivosDevuelveMontoBase()
 	{
+		double montoBase = 100, montoEsperado = 100;
+		planComercio.setMontoBase(montoBase);
+		cliente.setPlan(planComercio);
+		assertThat(cliente.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
 	public void clienteCalcularMontoPlanComercioUnDispositivoDevuelveSuma()
 	{
+		double montoBase = 100, costoDispositivo = 10, montoEsperado = 110;
+		planComercio.setMontoBase(montoBase);
+		dispositivoBase.setCosto(costoDispositivo);
+		cliente.agregarDispositivo(dispositivoBase);
+		cliente.setPlan(planComercio);
+		assertThat(cliente.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
 	public void clienteCalcularMontoPlanComercioMuchosDispositivosDevuelveSuma()
 	{
+		// montoEsperado es 130 porque son 3 dispositivos que tienen costo 10 (30) + montoPlan (100)
+		double montoBase = 100, costoDispositivo = 10, montoEsperado = 130;
+		planComercio.setMontoBase(montoBase);
+		dispositivos.forEach(dispositivo -> dispositivo.setCosto(costoDispositivo));
+		dispositivos.forEach(dispositivo -> cliente.agregarDispositivo(dispositivo));
+		cliente.setPlan(planComercio);
+		assertThat(cliente.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	/*
 	-----------------------------
@@ -419,47 +433,156 @@ class DdsPracticaE1SmartlifeApplicationTests {
 	@Test
 	public void facturaMensualCalcularMontoClienteCorporativoDescuentoCeroDevuelveMontoBase()
 	{
+		double montoBase = 100, descuento = 0, montoEsperado = 100;
 
+		planCorporativo.setMontoBase(montoBase);
+		planCorporativo.setDescuento(descuento);
+		cliente.setPlan(planCorporativo);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
 	public void facturaMensualCalcularMontoClienteCorporativoDescuentoNegativoDevuelveMontoBase()
 	{
+		double montoBase = 100, descuento = -100, montoEsperado = 100;
 
+		planCorporativo.setMontoBase(montoBase);
+		planCorporativo.setDescuento(descuento);
+		cliente.setPlan(planCorporativo);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
 	public void facturaMensualCalcularMontoClienteCorporativoDescuentoUnoDevuelveNoventaYNueve()
 	{
+		double montoPlan = 100, descuento = 1, montoEsperado = 99;
 
+		planCorporativo.setMontoBase(montoPlan);
+		planCorporativo.setDescuento(descuento);
+		cliente.setPlan(planCorporativo);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isCloseTo(montoEsperado, within(0.0001));
 	}
 	@Test
 	public void facturaMensualCalcularMontoClienteCorporativoDescuentoCincuentaDevuelveMitadMontoBase()
 	{
+		double montoPlan = 100, descuento = 50, montoEsperado = 50;
 
+		planCorporativo.setMontoBase(montoPlan);
+		planCorporativo.setDescuento(descuento);
+		cliente.setPlan(planCorporativo);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
 	public void facturaMensualCalcularMontoClienteCorporativoDescuentoNoventaYNueveDevuelveUno()
 	{
+		double montoPlan = 100, descuento = 99, montoEsperado = 1;
 
+		planCorporativo.setMontoBase(montoPlan);
+		planCorporativo.setDescuento(descuento);
+		cliente.setPlan(planCorporativo);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isCloseTo(montoEsperado, within(0.0001));
 	}
 	@Test
 	public void facturaMensualCalcularMontoClienteCorporativoDescuentoCienDevuelveCero()
 	{
+		double montoPlan = 100, descuento = 100, montoEsperado = 0;
 
+		planCorporativo.setMontoBase(montoPlan);
+		planCorporativo.setDescuento(descuento);
+		cliente.setPlan(planCorporativo);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
 	public void facturaMensualCalcularMontoClienteComercioCeroDispositivosDevuelveMontoBase()
 	{
+		double montoPlan = 100, montoEsperado = 100;
 
+		planComercio.setMontoBase(montoPlan);
+		cliente.setPlan(planComercio);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
-	public void facturaMensualCalcularMontoClienteComercioUnDispositivo()
+	public void facturaMensualCalcularMontoClienteComercioUnDispositivoDevuelveSuma()
 	{
+		double montoPlan = 100, costoDispositivo = 10, montoEsperado = 110;
 
+		dispositivoBase.setCosto(costoDispositivo);
+		planComercio.setMontoBase(montoPlan);
+		cliente.setPlan(planComercio);
+		cliente.agregarDispositivo(dispositivoBase);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
 	}
 	@Test
-	public void facturaMensualCalcularMontoClienteComercioMuchosDispositivos()
+	public void facturaMensualCalcularMontoClienteComercioMuchosDispositivosDevuelveSuma()
 	{
+		// el monto esperado es 100 (base) + 10 * 3 dispositivos = 130
+		double montoPlan = 100, costoDispositivo = 10, montoEsperado = 130;
 
+		planComercio.setMontoBase(montoPlan);
+		cliente.setPlan(planComercio);
+		dispositivos.forEach(dispositivo -> dispositivo.setCosto(costoDispositivo));
+		dispositivos.forEach(dispositivo -> cliente.agregarDispositivo(dispositivo));
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
 	}
+	@Test
+	public void facturaMensualCalcularMontoClienteComercioMismoDispositivoIgnoraDuplicadosDevuelveSuma()
+	{
+		// el monto esperado es 100 (base) + 10 * 1 dispositivo = 110
+		double montoPlan = 100, costoDispositivo = 10, montoEsperado = 110;
 
+		planComercio.setMontoBase(montoPlan);
+		cliente.setPlan(planComercio);
+		dispositivoBase.setCosto(costoDispositivo);
+		cliente.agregarDispositivo(dispositivoBase);
+		cliente.agregarDispositivo(dispositivoBase);
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
+	}
+	@Test
+	public void facturaMensualCalcularMontoClienteComercioAgregaYQuitaDispositivosDevuelveMontoBase()
+	{
+		// el monto esperado es 100 (base) + 10 * 1 dispositivo = 110
+		double montoPlan = 100, costoDispositivo = 10, montoEsperado = 100;
+
+		planComercio.setMontoBase(montoPlan);
+		cliente.setPlan(planComercio);
+		dispositivos.forEach(dispositivo -> dispositivo.setCosto(costoDispositivo));
+		dispositivos.forEach(dispositivo -> cliente.agregarDispositivo(dispositivo));
+		dispositivos.forEach(dispositivo -> cliente.removerDispositivo(dispositivo));
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
+	}
+	@Test
+	public void facturaMensualCalcularMontoClienteComercioAgregaYQuitaDispositivosDevuelveSuma()
+	{
+		// el monto esperado es 100 (base) + 10 * 2 dispositivos = 120
+		double montoPlan = 100, costoDispositivo = 10, montoEsperado = 120;
+
+		planComercio.setMontoBase(montoPlan);
+		cliente.setPlan(planComercio);
+		dispositivos.forEach(dispositivo -> dispositivo.setCosto(costoDispositivo));
+		dispositivos.forEach(dispositivo -> cliente.agregarDispositivo(dispositivo));
+		cliente.removerDispositivo(cliente.getDispositivos().stream().findFirst().get());
+		facturaMensual.setCliente(cliente);
+
+		assertThat(facturaMensual.calcularMonto()).isEqualTo(montoEsperado);
+	}
 }

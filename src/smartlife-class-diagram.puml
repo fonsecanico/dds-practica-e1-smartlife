@@ -8,7 +8,7 @@ class FacturaMensual
 }
 
 class Cliente {
-- List<Dispositivo> dispositivos
+- Set<Dispositivo> dispositivos
 - Plan plan
 + double calcularMonto()
 - void registrarDispositivo(Dispositivo dispositivo)
@@ -23,18 +23,18 @@ class Dispositivo
 
 abstract class Plan {
 # double montoBase
-+ {abstract} double calcularMonto(List<Dispositivo> dispositivos)
++ {abstract} double calcularMonto(Set<Dispositivo> dispositivos)
 }
 
 class PlanCorporativo {
 - double descuento
-+ calcularMonto(List<Dispositivo> dispositivos)
++ calcularMonto(Set<Dispositivo> dispositivos)
 }
 class PlanComercio {
-+ calcularMonto(List<Dispositivo> dispositivos)
++ calcularMonto(Set<Dispositivo> dispositivos)
 }
 class PlanHogar {
-+ calcularMonto(List<Dispositivo> dispositivos)
++ calcularMonto(Set<Dispositivo> dispositivos)
 }
 
 Cliente *-- Plan
